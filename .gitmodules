@@ -1,0 +1,3 @@
+[submodule "Expense-Manager"]
+	path = Expense-Manager
+	url = https://github.com/RicardoGVilla/Expense-Manager
