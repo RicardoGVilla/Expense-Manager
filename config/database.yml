@@ -1,0 +1,22 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: <%= ENV.fetch("POSTGRES_HOST", "localhost") %>
+  port: <%= ENV.fetch("POSTGRES_PORT", 5432) %>
+  username: myuser
+  password: mypassword
+
+development:
+  <<: *default
+  database: expense-manager
+
+test:
+  <<: *default
+  database: expense-manager
+
+production:
+  <<: *default
+  database: expense-manager
+  username: myuser
+  password: mypassword
