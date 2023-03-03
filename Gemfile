@@ -7,6 +7,12 @@ gem 'webpacker', '~> 5.4'
 
 gem 'pg'
 
+gem 'devise'
+
+gem 'warden'
+
+gem 'rack-cors'
+
 gem 'dotenv-rails', groups: [:development, :test]
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
