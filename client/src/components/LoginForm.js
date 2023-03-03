@@ -7,14 +7,19 @@ const LoginForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
     axios
-      .post("/users/sign_in", {
-        user: {
-          email: email,
-          password: password,
+      .post(
+        "http://localhost:3000/api/v1/users/sign_in.json",
+        {
+          user: {
+            email: email,
+            password: password,
+          },
         },
-      })
+        {
+          headers: { Accept: "application/json" },
+        }
+      )
       .then((response) => {
         console.log(response);
         // Handle success
