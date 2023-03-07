@@ -1,33 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [csrfToken, setCsrfToken] = useState("");
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  useEffect(() => {
+    // Fetch the CSRF token from the server
+
     axios
-      .post(
-        "http://localhost:3000/api/v1/users/sign_in.json",
-        {
-          user: {
-            email: email,
-            password: password,
-          },
-        },
-        {
-          headers: { Accept: "application/json" },
-        }
-      )
+      .get("http://localhost:3001/api/v1/csrf_token")
       .then((response) => {
-        console.log(response);
-        // Handle success
+        setCsrfToken(response.data.csrfToken);
       })
       .catch((error) => {
         console.log(error);
-        // Handle error
       });
+  }, []);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    if (csrfToken) {
+      console.log("CSRF token found:", csrfToken);
+
+      axios
+        .post(
+          "http://localhost:3001/users/sign_in",
+          {
+            user: {
+              email: email,
+              password: password,
+            },
+          },
+          {
+            headers: {
+              Accept: "application/json",
+              "X-CSRF-Token": csrfToken,
+            },
+          }
+        )
+        .then((response) => {
+          console.log("Login successful:", response);
+          // Handle success
+        })
+        .catch((error) => {
+          console.log("Login failed:", error);
+          // Handle error
+        });
+    } else {
+      console.log("CSRF token not found");
+    }
   };
 
   return (
