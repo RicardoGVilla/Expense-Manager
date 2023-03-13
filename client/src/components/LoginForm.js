@@ -1,14 +1,26 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
+import { usePlaidLink } from "react-plaid-link";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [csrfToken, setCsrfToken] = useState("");
+  const [linkToken, setLinkToken] = useState("");
+  const { open, ready } = usePlaidLink({
+    token: linkToken,
+    onSuccess: (public_token, metadata) => {
+      console.log("You made it");
+      console.log("public_token:", public_token);
+      console.log("metadata:", metadata);
+      // send the public_token back to the backend to exchange for an access_token
+    },
+    onExit: (err, metadata) => {
+      console.log("onExit:", err, metadata);
+    },
+  });
 
   useEffect(() => {
-    // Fetch the CSRF token from the server
-
     axios
       .get("http://localhost:3001/api/v1/csrf_token")
       .then((response) => {
@@ -19,12 +31,18 @@ const LoginForm = () => {
       });
   }, []);
 
+  const handleLinkClick = () => {
+    console.log(ready);
+    console.log(linkToken);
+    if (ready && linkToken) {
+      open();
+    }
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
     if (csrfToken) {
-      console.log("CSRF token found:", csrfToken);
-
       axios
         .post(
           "http://localhost:3001/users/sign_in",
@@ -42,12 +60,10 @@ const LoginForm = () => {
           }
         )
         .then((response) => {
-          console.log("Login successful:", response);
-          // Handle success
+          setLinkToken(response.data.link_token);
         })
         .catch((error) => {
           console.log("Login failed:", error);
-          // Handle error
         });
     } else {
       console.log("CSRF token not found");
@@ -73,6 +89,14 @@ const LoginForm = () => {
         />
       </label>
       <button type="submit">Login</button>
+      <button
+        type="button"
+        onClick={handleLinkClick}
+        disabled={!ready || !linkToken}
+        target="_blank"
+      >
+        Connect a bank account
+      </button>
     </form>
   );
 };
