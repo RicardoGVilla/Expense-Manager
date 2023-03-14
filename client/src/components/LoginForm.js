@@ -13,7 +13,27 @@ const LoginForm = () => {
       console.log("You made it");
       console.log("public_token:", public_token);
       console.log("metadata:", metadata);
+      console.log(csrfToken);
       // send the public_token back to the backend to exchange for an access_token
+      axios
+        .post(
+          "http://localhost:3001/api/v1/plaid/create_client_token",
+          {
+            public_token: public_token,
+          },
+          {
+            headers: {
+              Accept: "application/json",
+              "X-CSRF-Token": csrfToken,
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log("Error exchanging token:", error);
+        });
     },
     onExit: (err, metadata) => {
       console.log("onExit:", err, metadata);
