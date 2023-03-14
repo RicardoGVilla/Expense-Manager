@@ -7,10 +7,13 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [csrfToken, setCsrfToken] = useState("");
   const [linkToken, setLinkToken] = useState("");
+  const [user, setUser] = useState("");
+
   const { open, ready } = usePlaidLink({
     token: linkToken,
     onSuccess: (public_token, metadata) => {
       console.log("You made it");
+      console.log(user);
       console.log("public_token:", public_token);
       console.log("metadata:", metadata);
       console.log(csrfToken);
@@ -20,6 +23,7 @@ const LoginForm = () => {
           "http://localhost:3001/api/v1/plaid/create_client_token",
           {
             public_token: public_token,
+            user: user,
           },
           {
             headers: {
@@ -80,7 +84,10 @@ const LoginForm = () => {
           }
         )
         .then((response) => {
+          console.log("made back from the back end.");
+          console.log(response);
           setLinkToken(response.data.link_token);
+          setUser(response.data.user_id);
         })
         .catch((error) => {
           console.log("Login failed:", error);
