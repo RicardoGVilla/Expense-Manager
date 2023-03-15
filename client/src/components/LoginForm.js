@@ -12,11 +12,6 @@ const LoginForm = () => {
   const { open, ready } = usePlaidLink({
     token: linkToken,
     onSuccess: (public_token, metadata) => {
-      console.log("You made it");
-      console.log(user);
-      console.log("public_token:", public_token);
-      console.log("metadata:", metadata);
-      console.log(csrfToken);
       // send the public_token back to the backend to exchange for an access_token
       axios
         .post(
@@ -84,10 +79,8 @@ const LoginForm = () => {
           }
         )
         .then((response) => {
-          console.log("made back from the back end.");
-          console.log(response);
-          setLinkToken(response.data.link_token);
           setUser(response.data.user_id);
+          setLinkToken(response.data.link_token);
         })
         .catch((error) => {
           console.log("Login failed:", error);
