@@ -1,5 +1,5 @@
 require_relative "boot"
-
+require 'dotenv/load'
 require "rails/all"
 
 # Require the gems listed in Gemfile, including any gems
@@ -19,9 +19,12 @@ module Expense
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
+    config.session_store :cookie_store, key: '_your_app_session', expire_after: 1.day
+
+
     config.middleware.insert_before 0, Rack::Cors do
       allow do
-        origins 'localhost:3001' # replace with your React app's URL
+        origins 'localhost:3000' # Replace this with your frontend app's domain and port
         resource '*', headers: :any, methods: [:get, :post, :put, :patch, :delete, :options, :head]
       end
     end

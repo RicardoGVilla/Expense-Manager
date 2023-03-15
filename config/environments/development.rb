@@ -44,6 +44,9 @@ Rails.application.configure do
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
+  config.action_controller.forgery_protection_origin_check = false
+
+
   # Raise exceptions for disallowed deprecations.
   config.active_support.disallowed_deprecation = :raise
 
@@ -58,6 +61,9 @@ Rails.application.configure do
 
   # Suppress logger output for asset requests.
   config.assets.quiet = true
+
+  config.logger = Logger.new(STDOUT)
+
 
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true

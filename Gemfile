@@ -11,7 +11,13 @@ gem 'devise'
 
 gem 'warden'
 
-gem 'rack-cors'
+gem 'bcrypt'
+
+gem 'plaid', '~> 16.0'
+
+gem 'pry-rails'
+
+gem 'rack-cors', :require => 'rack/cors'
 
 gem 'dotenv-rails', groups: [:development, :test]
 
