@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { usePlaidLink } from "react-plaid-link";
+import BankTransactions from "./BankTransactions";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -8,6 +9,7 @@ const LoginForm = () => {
   const [csrfToken, setCsrfToken] = useState("");
   const [linkToken, setLinkToken] = useState("");
   const [user, setUser] = useState("");
+  const [accessToken, setAccessToken] = useState("");
 
   const { open, ready } = usePlaidLink({
     token: linkToken,
@@ -29,6 +31,7 @@ const LoginForm = () => {
         )
         .then((response) => {
           console.log(response);
+          setAccessToken(response.data.client_token);
         })
         .catch((error) => {
           console.log("Error exchanging token:", error);
@@ -91,33 +94,39 @@ const LoginForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Email:
-        <input
-          type="text"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-        />
-      </label>
-      <label>
-        Password:
-        <input
-          type="password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-        />
-      </label>
-      <button type="submit">Login</button>
-      <button
-        type="button"
-        onClick={handleLinkClick}
-        disabled={!ready || !linkToken}
-        target="_blank"
-      >
-        Connect a bank account
-      </button>
-    </form>
+    <>
+      {accessToken ? (
+        <BankTransactions accessToken={accessToken} />
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <label>
+            Email:
+            <input
+              type="text"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+            />
+          </label>
+          <label>
+            Password:
+            <input
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+            />
+          </label>
+          <button type="submit">Login</button>
+          <button
+            type="button"
+            onClick={handleLinkClick}
+            disabled={!ready || !linkToken}
+            target="_blank"
+          >
+            Connect a bank account
+          </button>
+        </form>
+      )}
+    </>
   );
 };
 
