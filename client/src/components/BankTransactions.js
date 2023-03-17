@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const BankTransactions = ({ accessToken }) => {
-  console.log(accessToken);
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
@@ -11,7 +10,9 @@ const BankTransactions = ({ accessToken }) => {
         `http://localhost:3001/api/v1/plaid/transactions?access_token=${accessToken}`
       )
       .then((response) => {
-        setTransactions(response.data.transactions);
+        console.log(response);
+        setTransactions(response.data);
+        console.log(transactions);
       })
       .catch((error) => {
         console.log("Error fetching transactions:", error);
@@ -21,13 +22,17 @@ const BankTransactions = ({ accessToken }) => {
   return (
     <div>
       <h2>Your Bank Transactions</h2>
-      <ul>
-        {transactions.map((transaction) => (
-          <li key={transaction.transaction_id}>
-            {transaction.name} - {transaction.amount}
-          </li>
-        ))}
-      </ul>
+      {transactions && transactions.length > 0 ? (
+        <ul>
+          {transactions.map((transaction) => (
+            <li key={transaction.transaction_id}>
+              {transaction.name} - {transaction.amount}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>Loading Your Bank Transactions...</p>
+      )}
     </div>
   );
 };
