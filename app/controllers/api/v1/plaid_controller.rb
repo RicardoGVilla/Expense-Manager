@@ -69,6 +69,8 @@ class Api::V1::PlaidController < ApplicationController
       transactions += transaction_response.transactions
     end
 
+    all_transactions = transactions
+
     render json: all_transactions.to_json
   end
 
