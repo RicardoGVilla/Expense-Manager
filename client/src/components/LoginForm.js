@@ -107,6 +107,7 @@ const LoginForm = () => {
                   class="card bg-dark text-white"
                   style={{ borderRadius: "1rem" }}
                 >
+                  {/* <i class="bi bi-piggy-bank"></i> */}
                   <div class="card-body p-5 text-center">
                     <div class="mb-md-5 mt-md-4 pb-5">
                       <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
