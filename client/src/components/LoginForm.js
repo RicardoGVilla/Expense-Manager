@@ -98,8 +98,9 @@ const LoginForm = () => {
       {accessToken ? (
         <BankTransactions accessToken={accessToken} />
       ) : (
-        <form onSubmit={handleSubmit}>
-          <label>
+        <form class="bg-danger" onSubmit={handleSubmit}>
+          <div class="p-3 mb-2 bg-primary text-white">Hello World</div>
+          <label for="inputEmail" class="sr-only">
             Email:
             <input
               type="text"
