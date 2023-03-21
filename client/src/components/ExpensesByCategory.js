@@ -68,30 +68,10 @@ const BankTransactions = ({ accessToken }) => {
         </div>
       )}
       {showExpensesByCategory && (
-        <div className="transactions-container">
-          <h2 className="title-transactions">Expenses by Category</h2>
-          <button onClick={goBack}>Back to Transactions</button>
-          {Object.entries(expensesByCategory).length > 0 ? (
-            <table>
-              <thead>
-                <tr>
-                  <th>Category</th>
-                  <th>Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                {Object.entries(expensesByCategory).map(([category, total]) => (
-                  <tr key={category}>
-                    <td>{category}</td>
-                    <td>{total.toFixed(2)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <p>No Expenses by Category Found...</p>
-          )}
-        </div>
+        <ExpensesByCategory
+          expensesByCategory={expensesByCategory}
+          goBack={goBack}
+        />
       )}
     </div>
   );
