@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import ExpensesByCategory from "./ExpensesByCategory";
 
 const BankTransactions = ({ accessToken }) => {
   const [transactions, setTransactions] = useState([]);

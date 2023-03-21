@@ -1,14 +1,21 @@
 import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import LoginForm from "./components/LoginForm";
+import Login from "./components/LoginForm";
+import BankTransactions from "./components/BankTransactions";
+import ExpensesByCategory from "./components/ExpensesByCategory";
 
-const App = () => {
+function App() {
   return (
-    <div>
-      <LoginForm />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/transactions" element={<BankTransactions />} />
+        <Route path="/expenses" element={<ExpensesByCategory />} />
+      </Routes>
+    </Router>
   );
-};
+}
 
 export default App;
