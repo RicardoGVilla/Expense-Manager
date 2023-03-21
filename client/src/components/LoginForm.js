@@ -13,8 +13,8 @@ const LoginForm = () => {
 
   const { open, ready } = usePlaidLink({
     token: linkToken,
-    onSuccess: (public_token, metadata) => {
-      // send the public_token back to the backend to exchange for an access_token
+    onSuccess: (public_token) => {
+      // sending the public_token back to the backend to exchange for an access_token
       axios
         .post(
           "http://localhost:3001/api/v1/plaid/create_client_token",
@@ -30,7 +30,6 @@ const LoginForm = () => {
           }
         )
         .then((response) => {
-          console.log(response);
           setAccessToken(response.data.client_token);
         })
         .catch((error) => {
@@ -41,6 +40,8 @@ const LoginForm = () => {
       console.log("onExit:", err, metadata);
     },
   });
+
+  //Obtaining public token
 
   useEffect(() => {
     axios
@@ -54,8 +55,6 @@ const LoginForm = () => {
   }, []);
 
   const handleLinkClick = () => {
-    console.log(ready);
-    console.log(linkToken);
     if (ready && linkToken) {
       open();
     }

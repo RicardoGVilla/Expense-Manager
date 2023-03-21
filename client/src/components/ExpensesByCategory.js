@@ -12,7 +12,6 @@ const BankTransactions = ({ accessToken }) => {
         `http://localhost:3001/api/v1/plaid/transactions?access_token=${accessToken}`
       )
       .then((response) => {
-        console.log(response);
         setTransactions(response.data);
       })
       .catch((error) => {

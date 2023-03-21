@@ -3,6 +3,7 @@ import axios from "axios";
 
 const BankTransactions = ({ accessToken }) => {
   const [transactions, setTransactions] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [showExpensesByCategory, setShowExpensesByCategory] = useState(false);
 
   useEffect(() => {
@@ -11,11 +12,12 @@ const BankTransactions = ({ accessToken }) => {
         `http://localhost:3001/api/v1/plaid/transactions?access_token=${accessToken}`
       )
       .then((response) => {
-        console.log(response);
         setTransactions(response.data);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.log("Error fetching transactions:", error);
+        setIsLoading(false);
       });
   }, [accessToken]);
 
@@ -40,7 +42,9 @@ const BankTransactions = ({ accessToken }) => {
         <div className="transactions-container">
           <h2 className="title-transactions">Your Bank Transactions</h2>
           <button onClick={showExpenses}>Expenses by Category</button>
-          {transactions && transactions.length > 0 ? (
+          {isLoading ? (
+            <p>Loading Your Bank Transactions...</p>
+          ) : transactions && transactions.length > 0 ? (
             <table>
               <thead>
                 <tr>
@@ -62,7 +66,7 @@ const BankTransactions = ({ accessToken }) => {
               </tbody>
             </table>
           ) : (
-            <p>Loading Your Bank Transactions...</p>
+            <p>No Transactions Found...</p>
           )}
         </div>
       )}
