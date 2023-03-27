@@ -31,7 +31,8 @@ const BankTransactions = ({ accessToken }) => {
 
   const expensesByCategory = transactions.reduce((accumulator, transaction) => {
     transaction.category.forEach((category) => {
-      accumulator[category] = (accumulator[category] || 0) + transaction.amount;
+      accumulator[category] =
+        (accumulator[category] || 0) + Math.abs(transaction.amount);
     });
     return accumulator;
   }, {});
@@ -59,7 +60,7 @@ const BankTransactions = ({ accessToken }) => {
                   <tr key={transaction.transaction_id}>
                     <td>{transaction.date}</td>
                     <td>{transaction.name}</td>
-                    <td>{transaction.amount}</td>
+                    <td>{Math.abs(transaction.amount)}</td>
                     <td>{transaction.category.join(", ")}</td>
                   </tr>
                 ))}

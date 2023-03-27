@@ -27,12 +27,19 @@ const BankTransactions = ({ accessToken }) => {
     setShowExpensesByCategory(false);
   };
 
-  const expensesByCategory = transactions.reduce((accumulator, transaction) => {
-    transaction.category.forEach((category) => {
-      accumulator[category] = (accumulator[category] || 0) + transaction.amount;
+  const expensesByCategory = (() => {
+    const accumulator = {};
+    transactions.forEach((transaction) => {
+      let addedToCategory = false;
+      transaction.category.forEach((category) => {
+        if (!addedToCategory && !accumulator[category]) {
+          accumulator[category] = transaction.amount;
+          addedToCategory = true;
+        }
+      });
     });
     return accumulator;
-  }, {});
+  })();
 
   return (
     <div>
