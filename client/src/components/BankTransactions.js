@@ -29,13 +29,27 @@ const BankTransactions = ({ accessToken }) => {
     setShowExpensesByCategory(false);
   };
 
-  const expensesByCategory = transactions.reduce((accumulator, transaction) => {
-    transaction.category.forEach((category) => {
-      accumulator[category] =
-        (accumulator[category] || 0) + Math.abs(transaction.amount);
+  const expensesByCategory = (() => {
+    const accumulator = {};
+    const categorizedTransactions = [];
+
+    transactions.forEach((transaction) => {
+      const category = transaction.category[0]; // Only consider the first category
+
+      if (!accumulator[category]) {
+        if (!categorizedTransactions.includes(transaction.transaction_id)) {
+          accumulator[category] = Math.abs(transaction.amount);
+          categorizedTransactions.push(transaction.transaction_id);
+        }
+      } else {
+        if (!categorizedTransactions.includes(transaction.transaction_id)) {
+          accumulator[category] += Math.abs(transaction.amount);
+          categorizedTransactions.push(transaction.transaction_id);
+        }
+      }
     });
     return accumulator;
-  }, {});
+  })();
 
   return (
     <div>
@@ -61,7 +75,7 @@ const BankTransactions = ({ accessToken }) => {
                     <td>{transaction.date}</td>
                     <td>{transaction.name}</td>
                     <td>{Math.abs(transaction.amount)}</td>
-                    <td>{transaction.category.join(", ")}</td>
+                    <td>{transaction.category[0]}</td>
                   </tr>
                 ))}
               </tbody>

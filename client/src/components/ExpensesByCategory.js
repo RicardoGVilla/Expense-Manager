@@ -29,15 +29,25 @@ const BankTransactions = ({ accessToken }) => {
 
   const expensesByCategory = (() => {
     const accumulator = {};
+    const categorizedTransactions = [];
+
     transactions.forEach((transaction) => {
-      let addedToCategory = false;
-      transaction.category.forEach((category) => {
-        if (!addedToCategory && !accumulator[category]) {
+      const category = transaction.category[0]; // Only consider the first category
+
+      if (!accumulator[category]) {
+        if (!categorizedTransactions.includes(transaction.transaction_id)) {
           accumulator[category] = transaction.amount;
-          addedToCategory = true;
+          categorizedTransactions.push(transaction.transaction_id);
         }
-      });
+      } else {
+        if (!categorizedTransactions.includes(transaction.transaction_id)) {
+          console.log("test");
+          accumulator[category] += 0;
+          categorizedTransactions.push(transaction.transaction_id);
+        }
+      }
     });
+
     return accumulator;
   })();
 
