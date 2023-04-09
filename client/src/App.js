@@ -4,7 +4,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import Login from "./components/LoginForm";
 import BankTransactions from "./components/BankTransactions";
-import ExpensesByCategory from "./components/ExpensesByCategory";
 
 function App() {
   return (
@@ -12,7 +11,6 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/transactions" element={<BankTransactions />} />
-        <Route path="/expenses" element={<ExpensesByCategory />} />
       </Routes>
     </Router>
   );
